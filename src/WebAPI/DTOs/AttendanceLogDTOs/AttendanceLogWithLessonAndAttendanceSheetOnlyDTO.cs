@@ -4,7 +4,7 @@ using WebAPI.DTOs.LessonDTOs;
 
 namespace WebAPI.DTOs.AttendanceLogDTOs
 {
-    public class AttendanceWithLessonAndAttendanceSheetOnlyDTO
+    public class AttendanceLogWithLessonAndAttendanceSheetOnlyDTO
     {
         public SimpleAttendanceSheetOnlyDTO AttendanceSheet { get; set; }
         public SimpleLessonDTO Lesson { get; set; }

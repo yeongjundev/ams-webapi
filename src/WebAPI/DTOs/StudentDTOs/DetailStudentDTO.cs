@@ -18,6 +18,6 @@ namespace WebAPI.DTOs.StudentDTOs
         public DateTime UpdateDateTime { get; set; }
 
         public List<EnrolmentWithLessonOnlyDTO> Enrolled { get; set; }
-        public List<AttendanceWithLessonAndAttendanceSheetOnlyDTO> AttendanceLogs { get; set; }
+        public List<AttendanceLogWithLessonAndAttendanceSheetOnlyDTO> AttendanceLogs { get; set; }
     }
 }

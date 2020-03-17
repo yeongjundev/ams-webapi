@@ -35,16 +35,11 @@ namespace Infrastructure.Data
 
             // AttendanceLog
             builder.Entity<AttendanceLog>()
-                .HasKey(attendance => new { attendance.StudentId, attendance.LessonId, attendance.AttendanceSheetId });
+                .HasKey(attendance => new { attendance.StudentId, attendance.AttendanceSheetId });
             builder.Entity<AttendanceLog>()
                 .HasOne(attendance => attendance.Student)
                 .WithMany(student => student.AttendanceLogs)
                 .HasForeignKey(attendance => attendance.StudentId)
-                .OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<AttendanceLog>()
-                .HasOne(attendance => attendance.Lesson)
-                .WithMany()
-                .HasForeignKey(attendance => attendance.LessonId)
                 .OnDelete(DeleteBehavior.Restrict);
             builder.Entity<AttendanceLog>()
                 .HasOne(attendance => attendance.AttendanceSheet)

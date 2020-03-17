@@ -10,10 +10,9 @@ namespace Core.Entities
         public int StudentId { get; set; }
 
         [Key, Column(Order = 1)]
-        public int LessonId { get; set; }
-
-        [Key, Column(Order = 2)]
         public int AttendanceSheetId { get; set; }
+
+        public int LessonId { get; set; }
 
         public Attendance Attendance { get; set; } = Attendance.Absent;
         public string Comment { get; set; }

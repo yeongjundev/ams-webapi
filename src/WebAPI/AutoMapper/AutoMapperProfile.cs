@@ -1,6 +1,7 @@
 using System;
 using AutoMapper;
 using Core.Entities;
+using Core.Enums;
 using Infrastructure.Helpers;
 using WebAPI.DTOs.AttendanceLogDTOs;
 using WebAPI.DTOs.AttendanceSheetDTOs;
@@ -64,11 +65,29 @@ namespace WebAPI.AutoMapper
                 .ForMember(dest => dest.UpdateDateTime, opt => opt.MapFrom(src => DateTime.Now));
 
             // AttendanceLog Mapping
+            CreateMap<AttendanceLog, AttendanceLogDTO>()
+                .ForMember(dest => dest.Attendance, opt => opt.MapFrom(src => src.Attendance.ToString()));
+            CreateMap<AttendanceLog, SimpleAttendanceLogOnlyDTO>()
+                .ForMember(dest => dest.Attendance, opt => opt.MapFrom(src => src.Attendance.ToString()));
             CreateMap<AttendanceLog, AttendanceLogWithOnlyStudentDTO>()
                 .ForMember(dest => dest.Attendance, opt => opt.MapFrom(src => src.Attendance.ToString()));
-            CreateMap<AttendanceLog, AttendanceWithLessonAndAttendanceSheetOnlyDTO>()
+            CreateMap<AttendanceLog, AttendanceLogWithLessonAndAttendanceSheetOnlyDTO>()
                 .ForMember(dest => dest.Attendance, opt => opt.MapFrom(src => src.Attendance.ToString()));
+            CreateMap<PutAttendanceLogDTO, AttendanceLog>()
+                .ForMember(dest => dest.Attendance, opt => opt.MapFrom(src => StringToAttendanceEnum(src.Attendance)))
+                .ForMember(dest => dest.LessonId, opt => opt.UseDestinationValue())
+                .ForMember(dest => dest.StudentId, opt => opt.UseDestinationValue())
+                .ForMember(dest => dest.AttendanceSheetId, opt => opt.UseDestinationValue())
+                .ForMember(dest => dest.CreateDateTime, opt => opt.UseDestinationValue())
+                .ForMember(dest => dest.UpdateDateTime, opt => opt.MapFrom(src => DateTime.Now));
+        }
 
+        private Attendance StringToAttendanceEnum(string str)
+        {
+            Attendance attendance;
+            var result = Enum.TryParse<Attendance>(str, true, out attendance);
+
+            return result ? attendance : Attendance.trial;
         }
     }
 }
