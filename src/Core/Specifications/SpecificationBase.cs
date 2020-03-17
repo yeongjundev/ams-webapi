@@ -26,57 +26,48 @@ namespace Core.Specifications
 
 
         // Filtering (Where)
-        public List<Expression<Func<T, bool>>> Filters { get; private set; }
+        public List<Expression<Func<T, bool>>> Filters { get; private set; } = new List<Expression<Func<T, bool>>>();
         public bool IsFiltersEnabled { get; private set; } = false;
         protected virtual void ApplyFilter(Expression<Func<T, bool>> selector)
         {
             if (selector == null)
             {
+                IsFiltersEnabled = false;
                 return;
             }
 
-            if (Filters == null)
-            {
-                Filters = new List<Expression<Func<T, bool>>>();
-                IsFiltersEnabled = true;
-            }
             Filters.Add(selector);
+            IsFiltersEnabled = true;
         }
 
         // Including (Include)
-        public List<Expression<Func<T, object>>> Includes { get; private set; }
-        public bool IsEncludesEnabled { get; private set; } = false;
+        public List<Expression<Func<T, object>>> Includes { get; private set; } = new List<Expression<Func<T, object>>>();
+        public bool IsIncludesEnabled { get; private set; } = false;
         protected virtual void ApplyInclude(Expression<Func<T, object>> selector)
         {
             if (selector == null)
             {
+                IsIncludesEnabled = false;
                 return;
             }
 
-            if (Includes == null)
-            {
-                Includes = new List<Expression<Func<T, object>>>();
-                IsEncludesEnabled = true;
-            }
             Includes.Add(selector);
+            IsIncludesEnabled = true;
         }
 
         // Including (IncludeString)
-        public List<string> IncludeStrings { get; private set; }
-        public bool IsEncludeStringsEnabled { get; private set; } = false;
+        public List<string> IncludeStrings { get; private set; } = new List<string>();
+        public bool IsIncludeStringsEnabled { get; private set; } = false;
         protected virtual void ApplyInclude(string propertyName)
         {
             if (string.IsNullOrWhiteSpace(propertyName))
             {
+                IsIncludeStringsEnabled = false;
                 return;
             }
 
-            if (IncludeStrings == null)
-            {
-                IncludeStrings = new List<string>();
-                IsEncludeStringsEnabled = true;
-            }
             IncludeStrings.Add(propertyName);
+            IsIncludeStringsEnabled = true;
         }
 
         // Search (Like)
@@ -89,42 +80,46 @@ namespace Core.Specifications
                 SearchKey = searchKey;
                 IsSearchEnabled = true;
             }
+            else
+            {
+                IsSearchEnabled = false;
+            }
         }
 
         // Sorting (OrderBy)
-        public List<(Expression<Func<T, object>>, bool)> OrderBys { get; private set; }
+        public List<(Expression<Func<T, object>>, bool)> OrderBys { get; private set; } = new List<(Expression<Func<T, object>>, bool)>();
         public bool IsOrderBysEnabled { get; private set; } = false;
         protected virtual void ApplyOrderBy(Expression<Func<T, object>> selector, bool isDesc)
         {
             if (selector == null)
             {
+                IsOrderBysEnabled = false;
                 return;
             }
 
-            if (OrderBys == null)
-            {
-                OrderBys = new List<(Expression<Func<T, object>>, bool)>();
-                IsOrderBysEnabled = true;
-            }
             OrderBys.Add((selector, isDesc));
+            IsOrderBysEnabled = true;
         }
 
         // Grouping (GroupBy)
-        public Expression<Func<T, object>> GroupBy { get; private set; }
-        public bool IsGroupBysEnabled { get; private set; } = false;
-        protected virtual void ApplyGroupBy(Expression<Func<T, object>> selector)
-        {
-            if (selector != null && GroupBy == null)
-            {
-                GroupBy = selector;
-                IsGroupBysEnabled = true;
-            }
-        }
+        // public Expression<Func<T, object>> GroupBy { get; private set; };
+        // public bool IsGroupBysEnabled { get; private set; } = false;
+        // protected virtual void ApplyGroupBy(Expression<Func<T, object>> selector)
+        // {
+        //     if (selector == null)
+        //     {
+        //         IsGroupBysEnabled = false;
+        //         return;
+        //     }
+
+        //     GroupBy = selector;
+        //     IsGroupBysEnabled = true;
+        // }
 
         private readonly int MaxPageSize = 30;
         public int PageSize { get; private set; }
         public int CurrentPage { get; private set; }
-        public bool IsPagingEnabled { get; private set; }
+        public bool IsPagingEnabled { get; private set; } = false;
         protected virtual void ApplyPaging(int currentPage, int pageSize)
         {
             if (currentPage > 0 && pageSize > 0)
