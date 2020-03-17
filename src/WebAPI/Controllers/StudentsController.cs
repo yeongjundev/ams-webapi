@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Core.Entities;
+using Core.Specifications;
 using Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,15 +46,18 @@ namespace WebAPI.Controllers
         // api/students/
         [HttpGet]
         public async Task<IActionResult> GetStudents(
-            [FromQuery] SearchOption searchOption
+            // [FromQuery] SearchOption searchOption
+            [FromQuery] OrderingOption orderingOption
         )
         {
-            // var student = await _uow.Repository<Student>().Find(id);
-            // if (student == null)
-            // {
-            //     return NotFound();
-            // }
-            return Ok();
+            var students = await _uow.Repository<Student>().Find(
+                new StudentsOnlySpecification(orderingOption.GetOrderByInfos(), 0, 0)
+            );
+            if (students == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            return Ok(_mapper.Map<List<StudentOnlyDTO>>(students));
         }
 
         // api/students/{id:int}
