@@ -8,8 +8,16 @@ namespace Core.Specifications
 {
     public class StudentsOnlySpecification : SpecificationBase<Student>
     {
-        protected readonly new StudentPropertySelector PropertySelector = new StudentPropertySelector();
+        private readonly StudentPropertySelector PropertySelector = new StudentPropertySelector();
 
-        public StudentsOnlySpecification(string searchKey, (string, bool)[] orderByPropertyNames, int currentPage, int pageSize) : base(searchKey, orderByPropertyNames, currentPage, pageSize) { }
+        public StudentsOnlySpecification(
+            List<(string, bool)> orderByInfos,
+            int currentPage, int pageSize
+        ) : base(orderByInfos, currentPage, pageSize) { }
+
+        protected override IPropertySelector<Student> GetPropertySelector()
+        {
+            return PropertySelector;
+        }
     }
 }

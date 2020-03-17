@@ -10,19 +10,19 @@ namespace Core.Specifications
 {
     public abstract class SpecificationBase<T> : ISpecification<T> where T : Entity
     {
-        protected readonly IPropertySelector<T> PropertySelector;
+        protected abstract IPropertySelector<T> GetPropertySelector();
 
         public SpecificationBase() { }
 
-        public SpecificationBase(string searchKey, (string, bool)[] orderByPropertyNames, int currentPage, int pageSize)
+        public SpecificationBase(List<(string, bool)> orderByInfos, int currentPage, int pageSize)
         {
             // ApplySearch(searchKey);
 
-            if (PropertySelector != null)
+            if (GetPropertySelector() != null && orderByInfos != null)
             {
-                foreach (var (propertyName, isDesc) in orderByPropertyNames)
+                foreach (var (propertyName, isDesc) in orderByInfos)
                 {
-                    ApplyOrderBy(PropertySelector.GetSelector(propertyName), isDesc);
+                    ApplyOrderBy(GetPropertySelector().GetSelector(propertyName), isDesc);
                 }
             }
 

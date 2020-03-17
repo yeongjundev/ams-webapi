@@ -33,7 +33,29 @@ currentPage: page number to be shown
 
 ### Student Resources
 
+#### [POST] ~/api/students/
+
+201 CREATED
+
+```json
+[
+  {
+    "id": 99,
+    "firstname": "Yeongjun",
+    "middlename": "",
+    "lastname": "Im",
+    "email": "yeongjundev@gmail.com",
+    "phone": "",
+    "description": "Graduate software engineer, love to learn new tech!",
+    "createDateTime": "2020-03-17T00:00:00.786948+11:00",
+    "updateDateTime": "2020-03-17T00:00:00.786948+11:00"
+  }
+]
+```
+
 #### [GET] ~/api/students/{studentId}
+
+200 OK
 
 ```json
 {
@@ -44,8 +66,8 @@ currentPage: page number to be shown
   "email": "yeongjundev@gmail.com",
   "phone": "",
   "description": "Graduate software engineer, love to learn new tech!",
-  "createDateTime": "",
-  "updateDateTime": "",
+  "createDateTime": "2020-03-17T00:00:00.786948+11:00",
+  "updateDateTime": "2020-03-17T00:16:00.786948+11:00",
   "enrolments": [
     {
       "createDateTime": "",
@@ -67,6 +89,8 @@ currentPage: page number to be shown
 :heavy_check_mark:Sort  
 :heavy_check_mark:Paging
 
+200 OK
+
 ```json
 [
   {
@@ -77,8 +101,32 @@ currentPage: page number to be shown
     "email": "yeongjundev@gmail.com",
     "phone": "",
     "description": "Graduate software engineer, love to learn new tech!",
-    "createDateTime": "",
-    "updateDateTime": ""
+    "createDateTime": "2020-03-17T00:00:00.786948+11:00",
+    "updateDateTime": "2020-03-17T00:00:00.786948+11:00"
   }
 ]
 ```
+
+#### [PUT] ~/api/students/{studentId}
+
+200 OK
+
+```json
+[
+  {
+    "id": 99,
+    "firstname": "Yeongjun",
+    "middlename": "",
+    "lastname": "Im",
+    "email": "yeongjundev@gmail.com",
+    "phone": "",
+    "description": "Graduate software engineer, love to learn new tech!",
+    "createDateTime": "2020-03-17T00:00:00.786948+11:00",
+    "updateDateTime": "2020-03-17T18:35:28.786948+11:00"
+  }
+]
+```
+
+#### [DELETE] ~/api/students/{studentId}
+
+200 OK
