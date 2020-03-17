@@ -64,9 +64,9 @@ namespace Core.Specifications
         // Including (IncludeString)
         public List<string> IncludeStrings { get; private set; }
         public bool IsEncludeStringsEnabled { get; private set; } = false;
-        protected virtual void ApplyIncludeString(string stringSelector)
+        protected virtual void ApplyInclude(string propertyName)
         {
-            if (string.IsNullOrWhiteSpace(stringSelector))
+            if (string.IsNullOrWhiteSpace(propertyName))
             {
                 return;
             }
@@ -76,7 +76,7 @@ namespace Core.Specifications
                 IncludeStrings = new List<string>();
                 IsEncludeStringsEnabled = true;
             }
-            IncludeStrings.Add(stringSelector);
+            IncludeStrings.Add(propertyName);
         }
 
         // Search (Like)
