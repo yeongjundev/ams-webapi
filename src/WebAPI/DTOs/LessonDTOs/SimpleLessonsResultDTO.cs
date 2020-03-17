@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace WebAPI.DTOs.StudentDTOs
+namespace WebAPI.DTOs.LessonDTOs
 {
-    public class SimpleStudentsResultDTO
+    public class SimpleLessonsResultDTO
     {
         public int PageSize { get; set; }
 
@@ -12,6 +12,6 @@ namespace WebAPI.DTOs.StudentDTOs
 
         public int TotalCount { get; set; }
 
-        public List<SimpleStudentDTO> Result { get; set; }
+        public List<SimpleLessonDTO> Result { get; set; }
     }
 }

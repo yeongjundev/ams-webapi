@@ -6,11 +6,11 @@ using Core.Specifications.Selectors;
 
 namespace Core.Specifications
 {
-    public class StudentsOnlySpecification : SpecificationBase<Student>
+    public class SimpleStudentsSpecification : SpecificationBase<Student>
     {
         private readonly StudentPropertySelector PropertySelector = new StudentPropertySelector();
 
-        public StudentsOnlySpecification(
+        public SimpleStudentsSpecification(
             List<(string, bool)> orderByInfos,
             int currentPage, int pageSize
         ) : base(orderByInfos, currentPage, pageSize) { }

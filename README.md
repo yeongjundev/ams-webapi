@@ -92,19 +92,35 @@ currentPage: page number to be shown
 200 OK
 
 ```json
-[
-  {
-    "id": 99,
-    "firstname": "Yeongjun",
-    "middlename": "",
-    "lastname": "Im",
-    "email": "yeongjundev@gmail.com",
-    "phone": "",
-    "description": "Graduate software engineer, love to learn new tech!",
-    "createDateTime": "2020-03-17T00:00:00.786948+11:00",
-    "updateDateTime": "2020-03-17T00:00:00.786948+11:00"
-  }
-]
+{
+  "pageSize": 15,
+  "currentPage": 1,
+  "lastPage": 1,
+  "result": [
+    {
+      "id": 99,
+      "firstname": "Yeongjun",
+      "middlename": "",
+      "lastname": "Im",
+      "email": "yeongjundev@gmail.com",
+      "phone": "",
+      "description": "Graduate software engineer, love to learn new tech!",
+      "createDateTime": "2020-03-17T00:00:00.786948+11:00",
+      "updateDateTime": "2020-03-17T00:00:00.786948+11:00"
+    },
+    {
+      "id": 100,
+      "firstname": "Cynthia",
+      "middlename": "",
+      "lastname": "Pham",
+      "email": "cynthia@gmail.com",
+      "phone": "",
+      "description": "Wife of graduate software engineer, love to learn new tech!",
+      "createDateTime": "2020-03-17T00:00:00.786948+11:00",
+      "updateDateTime": "2020-03-17T00:00:00.786948+11:00"
+    }
+  ]
+}
 ```
 
 #### [PUT] ~/api/students/{studentId}

@@ -50,7 +50,7 @@ namespace WebAPI.Controllers
             [FromQuery] PagingOption pagingOption
         )
         {
-            var specification = new StudentsOnlySpecification(
+            var specification = new SimpleStudentsSpecification(
                     orderingOption.GetOrderByInfos(),
                     pagingOption.CurrentPage, pagingOption.PageSize
                 );
