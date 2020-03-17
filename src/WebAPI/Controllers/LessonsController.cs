@@ -1,13 +1,15 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Core.Entities;
-using Core.Specifications;
+using Core.Specifications.LessonSpecifications;
 using Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebAPI.DTOs.LessonDTOs;
+using WebAPI.DTOs.StudentDTOs;
 using WebAPI.Helpers;
 
 namespace WebAPI.Controllers
@@ -34,12 +36,16 @@ namespace WebAPI.Controllers
         [HttpGet("{id}", Name = "GetLesson")]
         public async Task<IActionResult> GetLesson([FromRoute] int id)
         {
-            var lesson = await _uow.Repository<Lesson>().Find(id);
-            if (lesson == null)
+            var qro = await _uow.Repository<Lesson>().Find(new DetailLessonSpecification(id));
+            if (qro == null || qro.QueryResult == null)
             {
+                if (qro.QueryResult == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
                 return NotFound();
             }
-            return Ok(_mapper.Map<SimpleLessonDTO>(lesson));
+            return Ok(_mapper.Map<DetailLessonDTO>(qro.QueryResult.Single()));
         }
 
         // api/lessons/

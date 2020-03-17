@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Core.Entities;
-using Core.Specifications;
+using Core.Specifications.StudentSpecifications;
 using Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,12 +35,16 @@ namespace WebAPI.Controllers
         [HttpGet("{id}", Name = "GetStudent")]
         public async Task<IActionResult> GetStudent([FromRoute] int id)
         {
-            var student = await _uow.Repository<Student>().Find(id);
-            if (student == null)
+            var qro = await _uow.Repository<Student>().Find(new DetailStudentSpecification(id));
+            if (qro == null || qro.QueryResult == null)
             {
+                if (qro.QueryResult == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
                 return NotFound();
             }
-            return Ok(_mapper.Map<SimpleStudentDTO>(student));
+            return Ok(_mapper.Map<DetailStudentDTO>(qro.QueryResult.Single()));
         }
 
         // api/students/

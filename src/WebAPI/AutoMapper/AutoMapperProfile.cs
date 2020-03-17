@@ -16,8 +16,9 @@ namespace WebAPI.AutoMapper
             CreateMap<Student, SimpleStudentDTO>();
             CreateMap<QueryResultObject<Student>, SimpleStudentsResultDTO>()
                 .ForMember(dest => dest.Result, opt => opt.MapFrom(src => src.QueryResult));
+            CreateMap<Student, DetailStudentDTO>()
+                .ForMember(dest => dest.Enrolled, opt => opt.MapFrom(src => src.Enrolments));
             CreateMap<PostStudentDTO, Student>()
-                .ForMember(dest => dest.CreateDateTime, opt => opt.MapFrom(src => DateTime.Now))
                 .ForMember(dest => dest.UpdateDateTime, opt => opt.MapFrom(src => DateTime.Now));
             CreateMap<PutStudentDTO, Student>()
                 .ForMember(dest => dest.Id, opt => opt.UseDestinationValue())
@@ -28,8 +29,9 @@ namespace WebAPI.AutoMapper
             CreateMap<Lesson, SimpleLessonDTO>();
             CreateMap<QueryResultObject<Lesson>, SimpleLessonsResultDTO>()
                 .ForMember(dest => dest.Result, opt => opt.MapFrom(src => src.QueryResult));
+            CreateMap<Lesson, DetailLessonDTO>()
+                .ForMember(dest => dest.Enrolled, opt => opt.MapFrom(src => src.Enrolments));
             CreateMap<PostLessonDTO, Lesson>()
-                .ForMember(dest => dest.CreateDateTime, opt => opt.MapFrom(src => DateTime.Now))
                 .ForMember(dest => dest.UpdateDateTime, opt => opt.MapFrom(src => DateTime.Now));
             CreateMap<PutLessonDTO, Lesson>()
                 .ForMember(dest => dest.Id, opt => opt.UseDestinationValue())
@@ -40,6 +42,8 @@ namespace WebAPI.AutoMapper
             CreateMap<Enrolment, EnrolmentDTO>();
             CreateMap<QueryResultObject<Enrolment>, EnrolmentsResultDTO>()
                 .ForMember(dest => dest.Result, opt => opt.MapFrom(src => src.QueryResult));
+            CreateMap<Enrolment, EnrolmentWithLessonOnlyDTO>();
+            CreateMap<Enrolment, EnrolmentWithStudentOnlyDTO>();
         }
     }
 }
