@@ -29,6 +29,12 @@ namespace Core.Specifications.Selectors
                 case "phone":
                     selector = student => student.Phone;
                     break;
+                case "createdatetime":
+                    selector = attendanceSheet => attendanceSheet.CreateDateTime;
+                    break;
+                case "updatedatetime":
+                    selector = attendanceSheet => attendanceSheet.UpdateDateTime;
+                    break;
             }
             return selector;
         }

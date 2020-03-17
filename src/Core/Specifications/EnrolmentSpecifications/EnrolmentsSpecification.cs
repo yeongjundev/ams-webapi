@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using Core.Entities;
 using Core.Specifications.Selectors;
 
-namespace Core.Specifications
+namespace Core.Specifications.EnrolmentSpecifications
 {
     public class EnrolmentsSpecification : SpecificationBase<Enrolment>
     {

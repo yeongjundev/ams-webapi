@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using WebAPI.DTOs.AttendanceSheetDTOs;
 using WebAPI.DTOs.EnrolmentDTOs;
 
 namespace WebAPI.DTOs.LessonDTOs
@@ -13,5 +14,6 @@ namespace WebAPI.DTOs.LessonDTOs
         public DateTime UpdateDateTime { get; set; }
 
         public List<EnrolmentWithStudentOnlyDTO> Enrolled { get; set; }
+        public List<SimpleAttendanceSheetOnlyDTO> AttendanceSheets { get; set; }
     }
 }

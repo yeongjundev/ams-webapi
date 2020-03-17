@@ -17,6 +17,12 @@ namespace Core.Specifications.Selectors
                 case "title":
                     selector = lesson => lesson.Title;
                     break;
+                case "createdatetime":
+                    selector = attendanceSheet => attendanceSheet.CreateDateTime;
+                    break;
+                case "updatedatetime":
+                    selector = attendanceSheet => attendanceSheet.UpdateDateTime;
+                    break;
             }
             return selector;
         }

@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebAPI.DTOs.LessonDTOs;
-using WebAPI.DTOs.StudentDTOs;
 using WebAPI.Helpers;
 
 namespace WebAPI.Controllers
@@ -39,13 +38,15 @@ namespace WebAPI.Controllers
             var qro = await _uow.Repository<Lesson>().Find(new DetailLessonSpecification(id));
             if (qro == null || qro.QueryResult == null)
             {
-                if (qro.QueryResult == null)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-                }
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            var lesson = qro.QueryResult.SingleOrDefault();
+            if (lesson == null)
+            {
                 return NotFound();
             }
-            return Ok(_mapper.Map<DetailLessonDTO>(qro.QueryResult.Single()));
+            return Ok(_mapper.Map<DetailLessonDTO>(lesson));
         }
 
         // api/lessons/

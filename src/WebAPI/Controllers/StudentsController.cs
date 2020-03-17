@@ -38,13 +38,15 @@ namespace WebAPI.Controllers
             var qro = await _uow.Repository<Student>().Find(new DetailStudentSpecification(id));
             if (qro == null || qro.QueryResult == null)
             {
-                if (qro.QueryResult == null)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-                }
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            var student = qro.QueryResult.SingleOrDefault();
+            if (student == null)
+            {
                 return NotFound();
             }
-            return Ok(_mapper.Map<DetailStudentDTO>(qro.QueryResult.Single()));
+            return Ok(_mapper.Map<DetailStudentDTO>(student));
         }
 
         // api/students/

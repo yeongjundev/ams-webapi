@@ -15,5 +15,9 @@ namespace Core.Entities
         public string Description { get; set; }
 
         public List<Enrolment> Enrolments { get; set; }
+
+        public List<AttendanceLog> AttendanceLogs { get; set; }
+
+        public Student() : base() { }
     }
 }

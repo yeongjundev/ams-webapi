@@ -16,5 +16,7 @@ namespace Core.Entities
 
         [ForeignKey("LessonId")]
         public Lesson Lesson { get; set; }
+
+        public Enrolment() : base() { }
     }
 }

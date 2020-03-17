@@ -2,6 +2,8 @@ using System;
 using AutoMapper;
 using Core.Entities;
 using Infrastructure.Helpers;
+using WebAPI.DTOs.AttendanceLogDTOs;
+using WebAPI.DTOs.AttendanceSheetDTOs;
 using WebAPI.DTOs.EnrolmentDTOs;
 using WebAPI.DTOs.LessonDTOs;
 using WebAPI.DTOs.StudentDTOs;
@@ -44,6 +46,29 @@ namespace WebAPI.AutoMapper
                 .ForMember(dest => dest.Result, opt => opt.MapFrom(src => src.QueryResult));
             CreateMap<Enrolment, EnrolmentWithLessonOnlyDTO>();
             CreateMap<Enrolment, EnrolmentWithStudentOnlyDTO>();
+
+            // AttendanceSheet Mapping
+            CreateMap<AttendanceSheet, SimpleAttendanceSheetDTO>()
+                .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration.TotalHours));
+            CreateMap<AttendanceSheet, SimpleAttendanceSheetOnlyDTO>()
+                .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration.TotalHours));
+            CreateMap<QueryResultObject<AttendanceSheet>, SimpleAttendanceSheetsResultDTO>()
+                .ForMember(dest => dest.Result, opt => opt.MapFrom(src => src.QueryResult));
+            CreateMap<PostAttendanceSheetDTO, AttendanceSheet>()
+                .ForMember(dest => dest.UpdateDateTime, opt => opt.MapFrom(src => DateTime.Now));
+            CreateMap<AttendanceSheet, AttendanceSheetDTO>()
+                .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration.TotalHours));
+            CreateMap<PutAttendanceSheetDTO, AttendanceSheet>()
+                .ForMember(dest => dest.Id, opt => opt.UseDestinationValue())
+                .ForMember(dest => dest.CreateDateTime, opt => opt.UseDestinationValue())
+                .ForMember(dest => dest.UpdateDateTime, opt => opt.MapFrom(src => DateTime.Now));
+
+            // AttendanceLog Mapping
+            CreateMap<AttendanceLog, AttendanceLogWithOnlyStudentDTO>()
+                .ForMember(dest => dest.Attendance, opt => opt.MapFrom(src => src.Attendance.ToString()));
+            CreateMap<AttendanceLog, AttendanceWithLessonAndAttendanceSheetOnlyDTO>()
+                .ForMember(dest => dest.Attendance, opt => opt.MapFrom(src => src.Attendance.ToString()));
+
         }
     }
 }
