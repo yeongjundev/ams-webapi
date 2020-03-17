@@ -1,24 +1,25 @@
 using AutoMapper;
+using Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controllers]")]
+    [Route("api/[controller]")]
     public abstract class ApiControllerBase<TController> : ControllerBase where TController : ControllerBase
     {
         protected readonly ILogger<TController> _logger;
 
         protected readonly IMapper _mapper;
 
-        // protected readonly IUnitOfWork _uow;
+        protected readonly IUnitOfWork _uow;
 
-        public ApiControllerBase(ILogger<TController> logger, IMapper mapper) //, IUnitOfWork uow)
+        public ApiControllerBase(ILogger<TController> logger, IMapper mapper, IUnitOfWork uow)
         {
             _logger = logger;
             _mapper = mapper;
-            // _uow = uow;
+            _uow = uow;
         }
     }
 }

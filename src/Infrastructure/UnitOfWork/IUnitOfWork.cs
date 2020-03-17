@@ -8,6 +8,6 @@ namespace Infrastructure.UnitOfWork
     {
         IRepository<T> Repository<T>() where T : Entity;
 
-        int Complete();
+        bool Complete(int minChanges);
     }
 }

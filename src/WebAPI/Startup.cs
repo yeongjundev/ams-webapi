@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Infrastructure;
+using Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WebAPI.AutoMapper;
 
 namespace WebAPI
 {
@@ -27,6 +30,11 @@ namespace WebAPI
         {
             // EntityFrameworkCore DbContext
             services.AddInMemoryDbContext("InMemoryDB");
+            // AutoMapper
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+            // Services
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddControllers();
         }
 

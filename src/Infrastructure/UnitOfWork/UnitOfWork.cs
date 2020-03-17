@@ -8,18 +8,28 @@ namespace Infrastructure.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _dbContext;
+
+        public UnitOfWork(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
         private Hashtable _repositories;
 
-        public int Complete()
+        public bool Complete(int minChanges)
         {
-            return _context.SaveChanges();
+            var numChanges = _dbContext.SaveChanges();
+            if (minChanges > numChanges)
+            {
+                return false;
+            }
+            return true;
         }
 
         public void Dispose()
         {
-            _context.Dispose();
+            _dbContext.Dispose();
         }
 
         public IRepository<T> Repository<T>() where T : Entity
@@ -37,7 +47,7 @@ namespace Infrastructure.UnitOfWork
                 var newRepository = Activator
                     .CreateInstance(
                         repositoryType.MakeGenericType(entityType),
-                        _context
+                        _dbContext
                     );
 
                 _repositories.Add(entityType.Name, newRepository);

@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Core.Entities;
 using Core.Specifications.Selectors;
+using LinqKit;
 
 namespace Core.Specifications
 {
@@ -14,11 +16,14 @@ namespace Core.Specifications
 
         public SpecificationBase(string searchKey, (string, bool)[] orderByPropertyNames, int currentPage, int pageSize)
         {
-            ApplySearch(searchKey);
+            // ApplySearch(searchKey);
 
-            foreach (var (propertyName, isDesc) in orderByPropertyNames)
+            if (PropertySelector != null)
             {
-                ApplyOrderBy(PropertySelector.GetSelector(propertyName), isDesc);
+                foreach (var (propertyName, isDesc) in orderByPropertyNames)
+                {
+                    ApplyOrderBy(PropertySelector.GetSelector(propertyName), isDesc);
+                }
             }
 
             ApplyPaging(currentPage, pageSize);
@@ -71,20 +76,34 @@ namespace Core.Specifications
         }
 
         // Search (Like)
-        public string SearchKey { get; private set; }
-        public bool IsSearchEnabled { get; private set; } = false;
-        protected virtual void ApplySearch(string searchKey)
-        {
-            if (!string.IsNullOrWhiteSpace(searchKey))
-            {
-                SearchKey = searchKey;
-                IsSearchEnabled = true;
-            }
-            else
-            {
-                IsSearchEnabled = false;
-            }
-        }
+        // protected string _searchKey { get; private set; }
+        // public List<string> SearchFields { get; private set; } = new List<string>();
+        // public bool IsSearchEnabled { get; private set; } = false;
+        // protected virtual void ApplySearch(string searchKey, string[] properties)
+        // {
+        //     if (!string.IsNullOrWhiteSpace(searchKey))
+        //     {
+        //         _searchKey = searchKey;
+        //         // BuildSearchPredicate(properties);
+        //         IsSearchEnabled = true;
+        //     }
+        //     else
+        //     {
+        //         IsSearchEnabled = false;
+        //     }
+        // }
+
+        // private void BuildSearchPredicate(string[] propertyNames)
+        // {
+        //     var predicate = PredicateBuilder.New<T>(false).Or(x => false);
+        //     foreach (var propertyName in propertyNames)
+        //     {
+        //         Expression<Func<object, bool>> search = src => src.ToString().ToLower().Contains(_searchKey);
+        //         var newPredicate = search.Compile();
+        //         predicate.Or(newPredicate);
+        //     }
+        // }
+
 
         // Sorting (OrderBy)
         public List<(Expression<Func<T, object>>, bool)> OrderBys { get; private set; } = new List<(Expression<Func<T, object>>, bool)>();

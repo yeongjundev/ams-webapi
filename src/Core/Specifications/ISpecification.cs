@@ -17,8 +17,8 @@ namespace Core.Specifications
         List<(Expression<Func<T, object>>, bool)> OrderBys { get; }
         bool IsOrderBysEnabled { get; }
 
-        string SearchKey { get; }
-        bool IsSearchEnabled { get; }
+        // string SearchKey { get; }
+        // bool IsSearchEnabled { get; }
 
         // Expression<Func<T, object>> GroupBy { get; }
         // bool IsGroupBysEnabled { get; }

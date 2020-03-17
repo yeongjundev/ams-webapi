@@ -18,6 +18,12 @@ namespace Infrastructure.Repositories.SpecificationEvaluator
                     .Aggregate(query, (current, filter) => current.Where(filter));
             }
 
+            // Searching
+            // if (specification.IsSearchEnabled)
+            // {
+            //     query = query.Where(specification.SearchPredicate);
+            // }
+
             // Includes all expression-based includes
             if (specification.IsIncludesEnabled)
             {
