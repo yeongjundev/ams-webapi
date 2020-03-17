@@ -1,9 +1,8 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace WebAPI.DTOs
+namespace WebAPI.DTOs.StudentDTOs
 {
-    public class StudentOnlyDTO
+    public class SimpleStudentDTO
     {
         public int Id { get; set; }
         public string Firstname { get; set; }

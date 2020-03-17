@@ -6,6 +6,7 @@ using Core.Specifications;
 using Infrastructure.Repositories.SpecificationEvaluator;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Helpers;
 
 namespace Infrastructure.Repositories
 {
@@ -38,9 +39,11 @@ namespace Infrastructure.Repositories
             return _dbContext.Set<T>().FindAsync(ids);
         }
 
-        public ValueTask<List<T>> Find(ISpecification<T> specification = null)
+        public async ValueTask<QueryResultObject<T>> Find(ISpecification<T> specification = null)
         {
-            return new ValueTask<List<T>>(ApplySpecification(specification).ToListAsync());
+            var qro = new QueryResultObject<T>(specification.PageSize, specification.CurrentPage);
+            qro.SetQueryResult(await ApplySpecification(specification, qro).ToListAsync());
+            return qro;
         }
 
         public void Remove(T entity)
@@ -59,12 +62,21 @@ namespace Infrastructure.Repositories
             _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
-        private IQueryable<T> ApplySpecification(ISpecification<T> specification = null)
+        private IQueryable<T> ApplySpecification(ISpecification<T> specification, QueryResultObject<T> qro)
+        {
+            var query = ApplySpecification(specification);
+
+            query = SpecificationEvaluator<T>.GetPagiedQuery(query, specification, qro);
+            return query;
+        }
+
+        private IQueryable<T> ApplySpecification(ISpecification<T> specification)
         {
             var query = _dbContext.Set<T>().AsQueryable();
+
             if (specification != null)
             {
-                return SpecificationEvaluator<T>.GetQuery(query, specification);
+                query = SpecificationEvaluator<T>.GetQuery(query, specification);
             }
             return query;
         }

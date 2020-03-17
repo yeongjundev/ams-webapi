@@ -1,6 +1,8 @@
+using System;
 using System.Linq;
 using Core.Entities;
 using Core.Specifications;
+using Infrastructure.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories.SpecificationEvaluator
@@ -64,12 +66,31 @@ namespace Infrastructure.Repositories.SpecificationEvaluator
             //     query = query.GroupBy(specification.GroupBy).SelectMany(x => x);
             // }
 
-            // Apply paging if enabled
-            if (specification.IsPagingEnabled)
+            return query;
+        }
+
+        public static IQueryable<T> GetPagiedQuery(IQueryable<T> sourceQuery, ISpecification<T> specification, QueryResultObject<T> qro)
+        {
+            var query = sourceQuery;
+
+            qro.TotalCount = query.Count();
+
+            if (qro.TotalCount > 0 && specification.IsPagingEnabled)
             {
-                int skip = (specification.CurrentPage - 1) * specification.PageSize;
-                query = query.Skip(skip).Take(specification.PageSize);
+                qro.LastPage = (int)Math.Ceiling(qro.TotalCount / (double)qro.PageSize);
+                qro.CurrentPage = qro.CurrentPage > qro.LastPage ? qro.LastPage : qro.CurrentPage;
+
+                int skip = (qro.CurrentPage - 1) * qro.PageSize;
+                query = query.Skip(skip).Take(qro.PageSize);
+                qro.IsPaged = true;
             }
+            else
+            {
+                qro.CurrentPage = 1;
+                qro.LastPage = 1;
+            }
+
+
 
             return query;
         }

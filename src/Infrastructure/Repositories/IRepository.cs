@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Specifications;
+using Infrastructure.Helpers;
 
 namespace Infrastructure.Repositories
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> where T : Entity
     {
         ValueTask<T> Find(params object[] ids);
-        ValueTask<List<T>> Find(ISpecification<T> specification = null);
+        ValueTask<QueryResultObject<T>> Find(ISpecification<T> specification = null);
 
         void Add(T entity);
         void AddRange(List<T> entities);

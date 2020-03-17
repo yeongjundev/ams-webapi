@@ -7,7 +7,6 @@ using Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebAPI.DTOs;
 using WebAPI.DTOs.StudentDTOs;
 using WebAPI.Helpers;
 
@@ -28,7 +27,7 @@ namespace WebAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            return CreatedAtRoute("GetStudent", new { id = newStudent.Id }, _mapper.Map<StudentOnlyDTO>(newStudent));
+            return CreatedAtRoute("GetStudent", new { id = newStudent.Id }, _mapper.Map<SimpleStudentDTO>(newStudent));
         }
 
         // api/students/{id:int}
@@ -40,24 +39,27 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<StudentOnlyDTO>(student));
+            return Ok(_mapper.Map<SimpleStudentDTO>(student));
         }
 
         // api/students/
         [HttpGet]
         public async Task<IActionResult> GetStudents(
             // [FromQuery] SearchOption searchOption
-            [FromQuery] OrderingOption orderingOption
+            [FromQuery] OrderingOption orderingOption,
+            [FromQuery] PagingOption pagingOption
         )
         {
-            var students = await _uow.Repository<Student>().Find(
-                new StudentsOnlySpecification(orderingOption.GetOrderByInfos(), 0, 0)
-            );
-            if (students == null)
+            var specification = new StudentsOnlySpecification(
+                    orderingOption.GetOrderByInfos(),
+                    pagingOption.CurrentPage, pagingOption.PageSize
+                );
+            var qro = await _uow.Repository<Student>().Find(specification);
+            if (qro == null || qro.QueryResult == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            return Ok(_mapper.Map<List<StudentOnlyDTO>>(students));
+            return Ok(_mapper.Map<SimpleStudentsResultDTO>(qro));
         }
 
         // api/students/{id:int}
@@ -77,7 +79,7 @@ namespace WebAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            return Ok(_mapper.Map<StudentOnlyDTO>(student));
+            return Ok(_mapper.Map<SimpleStudentDTO>(student));
         }
 
         // api/students/{id:int}
